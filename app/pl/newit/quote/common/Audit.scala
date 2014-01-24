@@ -2,8 +2,7 @@ package pl.newit.quote.common
 
 import org.joda.time.DateTime
 
-import play.api.libs.functional.syntax.functionalCanBuildApplicative
-import play.api.libs.functional.syntax.toFunctionalBuilderOps
+import pl.newit.common.mongo.json._
 import play.api.libs.json._
 
 final case class Audit(
