@@ -36,7 +36,7 @@ private[dao] class AuthorDaoImpl @Inject() (@Named("Author") collection: JSONCol
   override def getAll(ids: Iterable[String]) =
     collection.find(
       Json.obj("_id" ->
-        Json.obj("$in" -> ids)))
+        Json.obj("$in" -> ids.toSet[String])))
       .cursor[Author]
       .enumerate()
 
