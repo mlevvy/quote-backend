@@ -1,4 +1,6 @@
 package pl.newit.common.play.api.mvc
+import scala.concurrent.Future.successful
+
 import org.joda.time.DateTime
 import org.specs2.mutable.Specification
 
@@ -11,12 +13,12 @@ class JodaTimeSpec extends Specification with JodaTime {
     "convert argument to DateTime and execute block" in {
       datetime("2014-01-24T22:15:50.981+01:00") { dt =>
         dt === new DateTime("2014-01-24T22:15:50.981+01:00")
-        Ok
+        successful(Ok)
       } === Ok
     }
 
     "return BadRequest in case of illegal argument" in {
-      datetime("foo")(_ => InternalServerError) === BadRequest
+      datetime("foo")(_ => successful(InternalServerError)) === BadRequest
     }
 
     "do not catch exceptions inside block" in {
