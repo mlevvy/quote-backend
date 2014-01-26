@@ -11,12 +11,11 @@ import org.specs2.specification.BeforeExample
 
 import pl.newit.common.time.TimeSource
 import pl.newit.quote.author.dao.AuthorDao
-import pl.newit.quote.author.dto.Author
+import pl.newit.quote.author.dto.Authors
 import pl.newit.quote.common.Audit
 import pl.newit.quote.sentence.dao.SentenceDao
-import pl.newit.quote.sentence.dto.Sentence
-import pl.newit.quote.service.dto.AuthorInfo
-import pl.newit.quote.service.dto.SentenceInfo
+import pl.newit.quote.sentence.dto.Sentences
+import pl.newit.quote.service.dto.SentenceInfos
 import pl.newit.test.concurrent._
 import play.api.libs.iteratee.Enumerator
 
@@ -33,34 +32,13 @@ class SentenceServiceImplSpec extends Specification with Mockito with BeforeExam
     update = new DateTime())
 
   val dummySentences = List(
-    Sentence(
-      id = "s1",
-      forDay = new DateTime("2014-02-01T00:00:00.000Z"),
-      content = "Lorem ipsum",
-      authorId = "a1",
-      audit = audit),
-    Sentence(
-      id = "s2",
-      forDay = new DateTime("2014-02-02T00:00:00.000Z"),
-      content = "dolor sit amet",
-      authorId = "a1",
-      audit = audit),
-    Sentence(
-      id = "s3",
-      forDay = new DateTime("2014-02-03T00:00:00.000Z"),
-      content = "Lorem ipsum",
-      authorId = "a2",
-      audit = audit))
+    Sentences.sentence1,
+    Sentences.sentence2,
+    Sentences.sentence3)
 
   val dummyAuthors = List(
-    Author(
-      id = "a1",
-      displayName = "Baz Faz",
-      audit = audit),
-    Author(
-      id = "a2",
-      displayName = "Foo Bar",
-      audit = audit))
+    Authors.author1,
+    Authors.author2)
 
   override def before() = reset(sentences, authors, clock)
 
@@ -123,12 +101,7 @@ class SentenceServiceImplSpec extends Specification with Mockito with BeforeExam
       result {
         new SentenceServiceImpl(sentences, authors, clock)
           .getAll(new DateTime("2012-01-01T00:00:00.000+01:00"))
-      } === List(SentenceInfo(
-        id = "s3",
-        content = "Lorem ipsum",
-        author = AuthorInfo(
-          id = "a2",
-          displayName = "Foo Bar")))
+      } === List(SentenceInfos.sentence3)
     }
   }
 }
