@@ -7,7 +7,7 @@ import pl.newit.quote.author.dto.Authors
 class AuthorInfoSpec extends Specification {
   "valueOf" should {
     "create instance based on supplied argument" in {
-      AuthorInfo.valueOf(Authors.author1) === AuthorInfos.author1
+      AuthorInfo.valueOf(Authors.AlbertEinstein) === AuthorInfos.AlbertEinstein
     }
   }
 }

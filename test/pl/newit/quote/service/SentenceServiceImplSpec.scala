@@ -32,13 +32,13 @@ class SentenceServiceImplSpec extends Specification with Mockito with BeforeExam
     update = new DateTime())
 
   val dummySentences = List(
-    Sentences.sentence1,
-    Sentences.sentence2,
-    Sentences.sentence3)
+    Sentences.Equality,
+    Sentences.Imagination,
+    Sentences.Woman)
 
   val dummyAuthors = List(
-    Authors.author1,
-    Authors.author2)
+    Authors.AlbertEinstein,
+    Authors.JerryLewis)
 
   override def before() = reset(sentences, authors, clock)
 
@@ -101,7 +101,7 @@ class SentenceServiceImplSpec extends Specification with Mockito with BeforeExam
       result {
         new SentenceServiceImpl(sentences, authors, clock)
           .getAll(new DateTime("2012-01-01T00:00:00.000+01:00"))
-      } === List(SentenceInfos.sentence3)
+      } === List(SentenceInfos.Woman)
     }
   }
 }

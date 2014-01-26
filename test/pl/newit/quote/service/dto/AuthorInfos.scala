@@ -1,11 +1,11 @@
 package pl.newit.quote.service.dto
 
 object AuthorInfos {
-  val author1 = AuthorInfo(
+  val AlbertEinstein = AuthorInfo(
     id = "a1",
-    displayName = "Baz Faz")
+    displayName = "Albert Einstein")
 
-  val author2 = AuthorInfo(
+  val JerryLewis = AuthorInfo(
     id = "a2",
-    displayName = "Foo Bar")
+    displayName = "Jerry Lewis")
 }

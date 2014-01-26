@@ -1,19 +1,19 @@
 package pl.newit.quote.service.dto
 
 object SentenceInfos {
-  val sentence1 = SentenceInfo(
+  val Equality = SentenceInfo(
     id = "s1",
-    content = "Lorem ipsum",
-    author = AuthorInfos.author1)
+    content = "Before God we are all equally wise - and equally foolish.",
+    author = AuthorInfos.AlbertEinstein)
 
-  val sentence2 = SentenceInfo(
+  val Imagination = SentenceInfo(
     id = "s2",
-    content = "dolor sit amet",
-    author = AuthorInfos.author1)
+    content = "Imagination is more important than knowledge...",
+    author = AuthorInfos.AlbertEinstein)
 
-  val sentence3 =
+  val Woman =
     SentenceInfo(
       id = "s3",
-      content = "consectetur adipisicing elit",
-      author = AuthorInfos.author2)
+      content = "Every man's dream is to be able to sink into the arms of a woman without also falling into her hands.",
+      author = AuthorInfos.JerryLewis)
 }

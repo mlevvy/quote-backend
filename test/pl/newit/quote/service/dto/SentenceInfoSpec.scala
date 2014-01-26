@@ -8,7 +8,7 @@ import pl.newit.quote.sentence.dto.Sentences
 class SentenceInfoSpec extends Specification {
   "valueOf" should {
     "create instance based on supplied arguments" in {
-      SentenceInfo.valueOf(Sentences.sentence1, Authors.author1) === SentenceInfos.sentence1
+      SentenceInfo.valueOf(Sentences.Equality, Authors.AlbertEinstein) === SentenceInfos.Equality
     }
   }
 }

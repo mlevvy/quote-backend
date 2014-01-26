@@ -18,12 +18,12 @@ class SentenceControllerSpec extends Specification with Mockito {
     "return Ok if there are sentences" in {
       val service = mock[SentenceService]
 
-      service.getAll(any) returns successful(List(SentenceInfos.sentence1, SentenceInfos.sentence2))
+      service.getAll(any) returns successful(List(SentenceInfos.Equality, SentenceInfos.Imagination))
 
       result {
         new SentenceController(service).getAll("2012-01-01T00:00:00.000+01:00")(
           FakeRequest(GET, "/sentence?since=2012-01-01T00:00:00.000+01:00"))
-      } must beEqualToResult(Ok(Json.arr(SentenceInfos.sentence1, SentenceInfos.sentence2)))
+      } must beEqualToResult(Ok(Json.arr(SentenceInfos.Equality, SentenceInfos.Imagination)))
     }
 
     "return NoContent if there is no sentences" in {

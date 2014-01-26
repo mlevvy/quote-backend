@@ -3,13 +3,13 @@ package pl.newit.quote.author.dto
 import pl.newit.quote.common.Audits
 
 object Authors {
-  val author1 = Author(
+  val AlbertEinstein = Author(
     id = "a1",
-    displayName = "Baz Faz",
+    displayName = "Albert Einstein",
     audit = Audits.audit)
 
-  val author2 = Author(
+  val JerryLewis = Author(
     id = "a2",
-    displayName = "Foo Bar",
+    displayName = "Jerry Lewis",
     audit = Audits.audit)
 }
