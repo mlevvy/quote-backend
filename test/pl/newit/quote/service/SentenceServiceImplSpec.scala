@@ -7,6 +7,7 @@ import org.joda.time.Interval
 import org.mockito.Mockito.reset
 import org.specs2.mock.Mockito
 import org.specs2.mutable.Specification
+import org.specs2.specification.BeforeExample
 
 import pl.newit.common.time.TimeSource
 import pl.newit.quote.author.dao.AuthorDao
@@ -19,7 +20,7 @@ import pl.newit.quote.service.dto.SentenceInfo
 import pl.newit.test.concurrent._
 import play.api.libs.iteratee.Enumerator
 
-class SentenceServiceImplSpec extends Specification with Mockito {
+class SentenceServiceImplSpec extends Specification with Mockito with BeforeExample {
 
   val sentences = mock[SentenceDao]
   val authors = mock[AuthorDao]
