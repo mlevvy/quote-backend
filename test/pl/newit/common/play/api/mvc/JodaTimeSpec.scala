@@ -4,10 +4,11 @@ import scala.concurrent.Future.successful
 import org.joda.time.DateTime
 import org.specs2.mutable.Specification
 
+import pl.newit.test.concurrent._
+import pl.newit.test.play.Matchers._
 import play.api.mvc.Results.BadRequest
 import play.api.mvc.Results.InternalServerError
 import play.api.mvc.Results.Ok
-import pl.newit.test.concurrent._
 
 class JodaTimeSpec extends Specification with JodaTime {
   "datetime" should {
@@ -17,13 +18,13 @@ class JodaTimeSpec extends Specification with JodaTime {
           dt === new DateTime("2014-01-24T22:15:50.981+01:00")
           successful(Ok)
         }
-      } === Ok
+      } must beEqualToResult(Ok)
     }
 
     "return BadRequest in case of illegal argument" in {
       result {
         datetime("foo")(_ => successful(InternalServerError))
-      } === BadRequest
+      } must beEqualToResult(BadRequest)
     }
 
     "do not catch exceptions inside block" in {
