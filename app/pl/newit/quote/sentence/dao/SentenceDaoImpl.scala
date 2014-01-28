@@ -40,4 +40,10 @@ private[dao] class SentenceDaoImpl @Inject() (@Named("Sentence") collection: JSO
         "$lt" -> interval.getEnd)))
       .cursor[Sentence]
       .enumerate()
+
+  override def delete(id: String) =
+    collection.remove(
+      Json.obj("_id" -> id))
+      .map(_.n > 0)
+
 }

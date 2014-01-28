@@ -11,4 +11,6 @@ trait SentenceDao {
   def create(from: SentenceInput, creatorId: String): Future[Sentence]
 
   def getAll(interval: Interval): Enumerator[Sentence]
+
+  def delete(id: String): Future[Boolean]
 }
