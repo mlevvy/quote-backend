@@ -38,8 +38,8 @@ private[service] class SentenceServiceImpl @Inject() (sentences: SentenceDao, au
   def getAll(interval: Interval): Future[List[SentenceInfo]] =
     sentences(interval).flatMap(sentences =>
       authors(sentences).map(authors =>
-        join(sentences, authors)(_.authorId)((sentence, author) =>
-          SentenceInfo.valueOf(sentence, author))))
+        join(sentences, authors)(_.authorId)(
+          SentenceInfo.valueOf)))
 
   def getAll(from: DateTime, to: DateTime): Future[List[SentenceInfo]] =
     if (!to.isBefore(from)) getAll(new Interval(from, to)) else successful(Nil)
