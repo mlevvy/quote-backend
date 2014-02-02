@@ -25,4 +25,10 @@ object MongoModule extends ScalaModule {
   @Named("Sentence")
   def sentence(db: DefaultDB): JSONCollection =
     db.collection("sentence")
+
+  @Provides
+  @Singleton
+  @Named("User")
+  def user(db: DefaultDB): JSONCollection =
+    db.collection("user")
 }
