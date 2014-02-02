@@ -40,6 +40,7 @@ private[mongo] class JsonCollectionOps(value: JSONCollection) {
     findAndUpdate(query, update, true, fields, false)(f, r)
 
   def upsert[T](query: JsObject, update: JsObject)(
-    implicit f: PartialFormat[BSONDocument], r: Reads[T]): Future[Option[T]] =
+    implicit f: PartialFormat[BSONDocument], r: Reads[T]): Future[T] =
     findAndUpdate(query, update, true, None, true)(f, r)
+      .map(_.get)
 }
