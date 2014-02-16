@@ -9,6 +9,7 @@ import pl.newit.common.play.api.mvc.JodaTime
 import pl.newit.quote.auth.Authenticated
 import pl.newit.quote.service.SentenceService
 import pl.newit.quote.service.dto.SentenceInput
+import play.api.mvc.Action
 import play.api.mvc.Controller
 
 final class SentenceController @Inject() (service: SentenceService) extends Controller with JodaTime with Collections {
@@ -19,7 +20,7 @@ final class SentenceController @Inject() (service: SentenceService) extends Cont
         .recoverTotal(_ => successful(BadRequest)))
 
   def getAll(from: String) =
-    Authenticated.async(
+    Action.async(
       datetime(from)(
         service.getAll(_)
           .map(okOrNoContent(_))))
