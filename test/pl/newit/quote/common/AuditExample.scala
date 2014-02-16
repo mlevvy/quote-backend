@@ -2,7 +2,7 @@ package pl.newit.quote.common
 
 import org.joda.time.DateTime
 
-object Audits {
+object AuditExample {
   val audit = Audit(
     creatorId = "creator",
     updaterId = "updater",

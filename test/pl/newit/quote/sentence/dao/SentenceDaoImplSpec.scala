@@ -9,7 +9,7 @@ import org.specs2.mutable.Specification
 import org.specs2.specification.BeforeExample
 
 import pl.newit.common.id.UniqueIdGenerator
-import pl.newit.common.mongo.LastErrors
+import pl.newit.common.mongo.LastErrorExample
 import pl.newit.common.time.TimeSource
 import pl.newit.quote.common.Audit
 import pl.newit.quote.sentence.dto.Sentence
@@ -29,7 +29,7 @@ class SentenceDaoImplSpec extends Specification with Mockito with BeforeExample 
   "create" should {
     "insert new document into collection" in {
       collection.insert[Sentence](document = any, writeConcern = any)(
-        writer = any, ec = any) returns successful(LastErrors.oneUpdated)
+        writer = any, ec = any) returns successful(LastErrorExample.oneUpdated)
 
       clock.now() returns new DateTime("2004-02-12T15:19:21Z")
       generator.generate() returns "foo"
@@ -60,7 +60,7 @@ class SentenceDaoImplSpec extends Specification with Mockito with BeforeExample 
   "delete" should {
     "delete document from collection" in {
       collection.remove(any, any, any)(any, any) returns
-        successful(LastErrors.oneExistingUpdated)
+        successful(LastErrorExample.oneExistingUpdated)
 
       result {
         new SentenceDaoImpl(collection, clock, generator)
@@ -76,10 +76,8 @@ class SentenceDaoImplSpec extends Specification with Mockito with BeforeExample 
     }
 
     "return false in case if nothing has been deleted" in {
-      val collection = mock[JSONCollection]
-
       collection.remove(any, any, any)(any, any) returns
-        successful(LastErrors.nothingUpdated)
+        successful(LastErrorExample.nothingUpdated)
 
       result {
         new SentenceDaoImpl(collection, clock, generator)
