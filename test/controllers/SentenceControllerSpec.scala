@@ -11,7 +11,7 @@ import pl.newit.quote.service.dto.SentenceInfoExample
 import pl.newit.quote.service.dto.SentencePartialInputExample
 import pl.newit.test.concurrent._
 import pl.newit.test.play.Matchers._
-import play.api.libs.json._
+import play.api.libs.json.Json
 import play.api.mvc.Results._
 import play.api.test._
 import play.api.test.Helpers._
@@ -36,7 +36,7 @@ class SentenceControllerSpec extends Specification with Mockito with BeforeExamp
       service.create(any, any) returns successful(Some(SentenceInfoExample.Equality))
 
       result {
-        request(body = Json.toJson(SentencePartialInputExample.EqualityJson).as[JsObject])
+        request(body = SentencePartialInputExample.EqualityJson)
       } must beEqualToResult(Created(Json.toJson(SentenceInfoExample.Equality)))
 
       there was {
@@ -49,13 +49,13 @@ class SentenceControllerSpec extends Specification with Mockito with BeforeExamp
       service.create(any, any) returns successful(None)
 
       result {
-        request(body = Json.toJson(SentencePartialInputExample.EqualityJson).as[JsObject])
+        request(body = SentencePartialInputExample.EqualityJson)
       } must beEqualToResult(NotFound)
     }
 
     "return BadRequest for illegal JSON" in {
       result {
-        request(body = Json.toJson(SentencePartialInputExample.EqualityJson).as[JsObject] - "content")
+        request(body = SentencePartialInputExample.EqualityJson - SentencePartialInputExample.EqualityJson.keys.head)
       } must beEqualToResult(BadRequest)
     }
   }
