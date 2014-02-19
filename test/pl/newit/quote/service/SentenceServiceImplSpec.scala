@@ -11,11 +11,11 @@ import org.specs2.specification.BeforeExample
 
 import pl.newit.common.time.TimeSource
 import pl.newit.quote.author.dao.AuthorDao
-import pl.newit.quote.author.dto.Authors
+import pl.newit.quote.author.dto.AuthorExample
 import pl.newit.quote.common.Audit
 import pl.newit.quote.sentence.dao.SentenceDao
-import pl.newit.quote.sentence.dto.Sentences
-import pl.newit.quote.service.dto.SentenceInfos
+import pl.newit.quote.sentence.dto.SentenceExample
+import pl.newit.quote.service.dto.SentenceInfoExample
 import pl.newit.test.concurrent._
 import play.api.libs.iteratee.Enumerator
 
@@ -32,13 +32,13 @@ class SentenceServiceImplSpec extends Specification with Mockito with BeforeExam
     update = new DateTime())
 
   val dummySentences = List(
-    Sentences.Equality,
-    Sentences.Imagination,
-    Sentences.Woman)
+    SentenceExample.Equality,
+    SentenceExample.Imagination,
+    SentenceExample.Woman)
 
   val dummyAuthors = List(
-    Authors.AlbertEinstein,
-    Authors.JerryLewis)
+    AuthorExample.AlbertEinstein,
+    AuthorExample.JerryLewis)
 
   override def before() = reset(sentences, authors, clock)
 
@@ -101,7 +101,7 @@ class SentenceServiceImplSpec extends Specification with Mockito with BeforeExam
       result {
         new SentenceServiceImpl(sentences, authors, clock)
           .getAll(new DateTime("2012-01-01T00:00:00.000+01:00"))
-      } === List(SentenceInfos.Woman)
+      } === List(SentenceInfoExample.Woman)
     }
   }
 }

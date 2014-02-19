@@ -6,4 +6,5 @@
 #GET   /assets/*file   controllers.Assets.at(path="/public", file)
 
 
-GET   /sentence       @controllers.SentenceController.getAll(since: String)
+GET    /sentence                    @controllers.SentenceController.getAll(since: String)
+POST   /author/:authorId/sentence   @controllers.SentenceController.create(authorId: String)

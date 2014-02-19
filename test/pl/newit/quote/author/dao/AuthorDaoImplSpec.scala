@@ -6,7 +6,7 @@ import org.specs2.mock.Mockito
 import org.specs2.mutable.Specification
 
 import pl.newit.common.id.UniqueIdGenerator
-import pl.newit.common.mongo.LastErrors
+import pl.newit.common.mongo.LastErrorExample
 import pl.newit.common.time.TimeSource
 import pl.newit.quote.author.dto.Author
 import pl.newit.quote.common.Audit
@@ -21,7 +21,7 @@ class AuthorDaoImplSpec extends Specification with Mockito {
       val collection = mock[JSONCollection]
 
       collection.insert[Author](document = any, writeConcern = any)(
-        writer = any, ec = any) returns successful(LastErrors.oneUpdated)
+        writer = any, ec = any) returns successful(LastErrorExample.oneUpdated)
 
       clock.now() returns new DateTime("2004-02-12T15:19:21Z")
       generator.generate() returns "foo"

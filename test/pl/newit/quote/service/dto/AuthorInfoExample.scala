@@ -1,6 +1,6 @@
 package pl.newit.quote.service.dto
 
-object AuthorInfos {
+object AuthorInfoExample {
   val AlbertEinstein = AuthorInfo(
     id = "a1",
     displayName = "Albert Einstein")

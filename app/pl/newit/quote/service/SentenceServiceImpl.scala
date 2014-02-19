@@ -13,11 +13,29 @@ import pl.newit.quote.author.dao.AuthorDao
 import pl.newit.quote.author.dto.Author
 import pl.newit.quote.sentence.dao.SentenceDao
 import pl.newit.quote.sentence.dto.Sentence
+import pl.newit.quote.sentence.dto.SentenceInput
 import pl.newit.quote.service.dto.SentenceInfo
+import pl.newit.quote.service.dto.SentencePartialInput
 import play.api.libs.iteratee.Iteratee
 
 private[service] class SentenceServiceImpl @Inject() (sentences: SentenceDao, authors: AuthorDao, clock: TimeSource)
   extends SentenceService {
+
+  def transform[T, S](from: Future[Option[T]])(f: T => Future[S]) =
+    from.flatMap {
+      case Some(t) => f(t).map(Option(_))
+      case None => successful(None)
+    }
+
+  override def create(from: SentencePartialInput, authorId: String) =
+    transform(authors.get(authorId))(author =>
+      sentences.create(
+        from = SentenceInput(
+          forDay = from.forDay,
+          content = from.content,
+          authorId = author.id),
+        creatorId = "anonymous")
+        .map(SentenceInfo.valueOf(_, author)))
 
   def toMap[K, V](k: V => K): Iteratee[V, Map[K, V]] =
     Iteratee.fold(Map.newBuilder[K, V])(

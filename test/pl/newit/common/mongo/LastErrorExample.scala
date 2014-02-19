@@ -1,7 +1,7 @@
 package pl.newit.common.mongo
 import reactivemongo.core.commands.LastError
 
-object LastErrors {
+object LastErrorExample {
   val nothingUpdated = LastError(
     ok = true,
     err = None,
