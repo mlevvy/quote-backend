@@ -12,6 +12,7 @@ import pl.newit.quote.service.dto.SentencePartialInputExample
 import pl.newit.test.concurrent._
 import pl.newit.test.play.Matchers._
 import play.api.libs.json.Json
+import play.api.libs.json.JsObject
 import play.api.mvc.Results._
 import play.api.test._
 import play.api.test.Helpers._
