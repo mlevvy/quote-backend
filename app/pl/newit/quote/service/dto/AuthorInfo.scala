@@ -11,5 +11,6 @@ object AuthorInfo {
   implicit val writes = Json.writes[AuthorInfo]
 
   def valueOf(author: Author) =
-    apply(author.id, author.displayName)
+    apply(id = author.id,
+      displayName = author.displayName)
 }
