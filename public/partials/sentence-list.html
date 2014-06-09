@@ -1,0 +1,18 @@
+<h2>Sentences</h2>
+<table class="table table-striped">
+	<caption>List of all sentences</caption>
+	<thead>
+		<tr>
+			<th><a href="" ng-click="predicate = 'forDay'; reverse=!reverse">For day</a></th>
+			<th>Content</th>
+			<th>Author</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="sentence in sentences | orderBy:predicate:reverse">
+			<td>{{ sentence.forDay | date:'longDate'}}</td>
+			<td>{{ sentence.content }}</td>
+			<td>{{ sentence.author.displayName }}</td>
+		</tr>
+	</tbody>
+</table>
