@@ -6,10 +6,10 @@ import scala.util.control.Exception.catching
 import org.joda.time.DateTime
 
 import play.api.mvc.Results.BadRequest
-import play.api.mvc.SimpleResult
+import play.api.mvc.Result
 
 trait JodaTime {
-  def datetime(from: String)(block: DateTime => Future[SimpleResult]): Future[SimpleResult] =
+  def datetime(from: String)(block: DateTime => Future[Result]): Future[Result] =
     catching(classOf[IllegalArgumentException])
       .opt(new DateTime(from))
       .map(block)

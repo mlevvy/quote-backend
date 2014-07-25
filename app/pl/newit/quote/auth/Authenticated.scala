@@ -5,10 +5,10 @@ import scala.concurrent.Future.successful
 import play.api.mvc.ActionBuilder
 import play.api.mvc.Request
 import play.api.mvc.Results.Forbidden
-import play.api.mvc.SimpleResult
+import play.api.mvc.Result
 
 object Authenticated extends ActionBuilder[AuthenticatedRequest] {
-  def invokeBlock[A](request: Request[A], block: (AuthenticatedRequest[A]) => Future[SimpleResult]) =
+  def invokeBlock[A](request: Request[A], block: (AuthenticatedRequest[A]) => Future[Result]) =
     request.session.get("me").map(identity =>
       block(AuthenticatedRequest(identity, request)))
       .getOrElse(successful(Forbidden))
