@@ -1,4 +1,7 @@
 package pl.newit.quote.sentence.dao
+
+import pl.newit.quote.service.dto.SentenceUpdate
+
 import scala.concurrent.Future
 
 import org.joda.time.Interval
@@ -13,4 +16,6 @@ trait SentenceDao {
   def getAll(interval: Interval): Enumerator[Sentence]
 
   def delete(id: String): Future[Boolean]
+
+  def update(id: String, newContent: SentenceUpdate): Future[Option[SentenceUpdate]]
 }

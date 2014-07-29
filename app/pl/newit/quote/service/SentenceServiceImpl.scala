@@ -14,8 +14,7 @@ import pl.newit.quote.author.dto.Author
 import pl.newit.quote.sentence.dao.SentenceDao
 import pl.newit.quote.sentence.dto.Sentence
 import pl.newit.quote.sentence.dto.SentenceInput
-import pl.newit.quote.service.dto.SentenceInfo
-import pl.newit.quote.service.dto.SentencePartialInput
+import pl.newit.quote.service.dto.{SentenceUpdate, SentenceInfo, SentencePartialInput}
 import play.api.libs.iteratee.Iteratee
 
 private[service] class SentenceServiceImpl @Inject() (sentences: SentenceDao, authors: AuthorDao, clock: TimeSource)
@@ -64,5 +63,9 @@ private[service] class SentenceServiceImpl @Inject() (sentences: SentenceDao, au
 
   override def getAll(since: DateTime) =
     getAll(since, clock.now(since.getZone))
+
+  override def update(sentenceUpdate: SentenceUpdate, sentenceId: String):Future[Option[SentenceUpdate]] = {
+    sentences.update(sentenceId, sentenceUpdate)
+  }
 
 }

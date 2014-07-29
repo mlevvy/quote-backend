@@ -7,8 +7,7 @@ import org.specs2.mutable.Specification
 import org.specs2.specification.BeforeExample
 
 import pl.newit.quote.service.SentenceService
-import pl.newit.quote.service.dto.SentenceInfoExample
-import pl.newit.quote.service.dto.SentencePartialInputExample
+import pl.newit.quote.service.dto._
 import pl.newit.test.concurrent._
 import pl.newit.test.play.Matchers._
 import play.api.libs.json.Json
@@ -59,6 +58,53 @@ class SentenceControllerSpec extends Specification with Mockito with BeforeExamp
         request(body = SentencePartialInputExample.EqualityJson - SentencePartialInputExample.EqualityJson.keys.head)
       } must beEqualToResult(BadRequest)
     }
+  }
+
+  "update" should {
+    def request(body: JsObject) = {
+      newController.update("sentenceId")(
+      FakeRequest(
+        method = PUT,
+        uri = routes.SentenceController.update("sentenceId").url,
+        headers = FakeHeaders(),
+        body = body)
+      )
+    }
+
+    "update existing sentence" in {
+      service.update(any, any) returns successful(Some(SentenceUpdateExample.CorrectUpdate))
+
+      result {
+        request(body = SentenceUpdateInputExample.CorrectUpdate)
+      } must beEqualToResult(Ok(Json.toJson(SentenceUpdateExample.CorrectUpdate)))
+
+      there was {
+        one(service).update(SentenceUpdateExample.CorrectUpdate, "sentenceId")
+        noMoreCallsTo(service)
+      }
+    }
+
+    "return NotFound if there is no sentence" in {
+      service.update(any, any) returns successful(None)
+
+      result {
+        request(body = SentenceUpdateInputExample.CorrectUpdate)
+      } must beEqualToResult(NotFound)
+
+      there was {
+        one(service).update(SentenceUpdateExample.CorrectUpdate, "sentenceId")
+        noMoreCallsTo(service)
+      }
+
+    }
+
+    "return BadRequest for illegal JSON" in {
+      result {
+        request(body = SentenceUpdateInputExample.CorrectUpdate - SentenceUpdateInputExample.CorrectUpdate.keys.head)
+      } must beEqualToResult(BadRequest)
+
+    }
+
   }
 
   "getAll" should {
