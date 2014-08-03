@@ -6,6 +6,7 @@ import org.specs2.mock.Mockito
 import org.specs2.mutable.Specification
 import org.specs2.specification.BeforeExample
 
+import pl.newit.quote.sentence.dto.SentenceInputExample
 import pl.newit.quote.service.SentenceService
 import pl.newit.quote.service.dto._
 import pl.newit.test.concurrent._
@@ -25,37 +26,37 @@ class SentenceControllerSpec extends Specification with Mockito with BeforeExamp
 
   "create" should {
     def request(body: JsObject) =
-      newController.create("einstein")(
+      newController.create()(
         FakeRequest(
           method = POST,
-          uri = routes.SentenceController.create("einstein").url,
+          uri = routes.SentenceController.create.url,
           headers = FakeHeaders(),
           body = body))
 
     "return newly Created sentence" in {
-      service.create(any, any) returns successful(Some(SentenceInfoExample.Equality))
+      service.create(any) returns successful(Some(SentenceInfoExample.Equality))
 
       result {
-        request(body = SentencePartialInputExample.EqualityJson)
+        request(body = SentenceInputExample.EqualityJson)
       } must beEqualToResult(Created(Json.toJson(SentenceInfoExample.Equality)))
 
       there was {
-        one(service).create(SentencePartialInputExample.Equality, "einstein")
+        one(service).create(SentenceInputExample.Equality)
         noMoreCallsTo(service)
       }
     }
 
-    "return NotFound if there is no author" in {
-      service.create(any, any) returns successful(None)
+    "return UnprocessableEntity if there is no author" in {
+      service.create(any) returns successful(None)
 
       result {
-        request(body = SentencePartialInputExample.EqualityJson)
-      } must beEqualToResult(NotFound)
+        request(body = SentenceInputExample.EqualityJson)
+      } must beEqualToResult(UnprocessableEntity)
     }
 
     "return BadRequest for illegal JSON" in {
       result {
-        request(body = SentencePartialInputExample.EqualityJson - SentencePartialInputExample.EqualityJson.keys.head)
+        request(body = SentenceInputExample.EqualityJson - SentenceInputExample.EqualityJson.keys.head)
       } must beEqualToResult(BadRequest)
     }
   }
