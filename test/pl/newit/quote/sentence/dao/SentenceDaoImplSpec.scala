@@ -1,4 +1,7 @@
 package pl.newit.quote.sentence.dao
+
+import pl.newit.quote.service.dto.SentenceUpdate
+
 import scala.concurrent.Future.successful
 
 import org.joda.time.DateTime
@@ -83,6 +86,46 @@ class SentenceDaoImplSpec extends Specification with Mockito with BeforeExample 
         new SentenceDaoImpl(collection, clock, generator)
           .delete("foo")
       } === false
+    }
+  }
+
+  "update" should {
+    "update citation if document is found" in {
+      collection.update(any, any, any, any, any)(any, any, any) returns
+        successful(LastErrorExample.oneExistingUpdated)
+
+      result {
+        new SentenceDaoImpl(collection, clock, generator)
+          .update("foo", SentenceUpdate("bar"))
+      } === Some(SentenceUpdate("bar"))
+
+      there was one(collection).update(
+        selector = Matchers.eq(Json.obj("_id" -> "foo")),
+        update = Matchers.eq(Json.obj("$set"->Json.obj("content" -> "bar"))),
+        writeConcern = any,
+        upsert = any,
+        multi = any)(
+          selectorWriter = any,
+          updateWriter = any, ec = any)
+    }
+
+    "update citation if document is not found" in {
+      collection.update(any, any, any, any, any)(any, any, any) returns
+        successful(LastErrorExample.nothingUpdated)
+
+      result {
+        new SentenceDaoImpl(collection, clock, generator)
+          .update("foo", SentenceUpdate("bar"))
+      } === None
+
+      there was one(collection).update(
+        selector = Matchers.eq(Json.obj("_id" -> "foo")),
+        update = Matchers.eq(Json.obj("$set"->Json.obj("content" -> "bar"))),
+        writeConcern = any,
+        upsert = any,
+        multi = any)(
+          selectorWriter = any,
+          updateWriter = any, ec = any)
     }
   }
 }

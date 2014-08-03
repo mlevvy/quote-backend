@@ -6,9 +6,8 @@ import com.google.inject.Inject
 
 import pl.newit.common.play.api.mvc.Collections
 import pl.newit.common.play.api.mvc.JodaTime
-import pl.newit.quote.auth.Authenticated
 import pl.newit.quote.service.SentenceService
-import pl.newit.quote.service.dto.SentencePartialInput
+import pl.newit.quote.service.dto.{SentenceUpdate, SentencePartialInput}
 import play.api.libs.json.JsValue
 import play.api.libs.json.Json.toJson
 import play.api.mvc.Action
@@ -22,11 +21,24 @@ final class SentenceController @Inject() (service: SentenceService) extends Cont
       case None => NotFound
     }
 
+  def update(from: SentenceUpdate, sentenceId: String) =
+    service.update(from, sentenceId).map {
+      case Some(ok) => Ok(toJson(ok))
+      case None => NotFound
+    }
+
   def create(authorId: String): Action[JsValue] =
     Action.async(parse.json)(request =>
       request.body.validate[SentencePartialInput]
         .map(create(_, authorId))
         .recoverTotal(_ => successful(BadRequest)))
+
+  def update(sentenceId: String): Action[JsValue] =
+    Action.async(parse.json) (request =>
+      request.body.validate[SentenceUpdate]
+      .map(update(_, sentenceId))
+      .recoverTotal(_ => successful(BadRequest))
+    )
 
   def getAll(from: String) =
     Action.async(

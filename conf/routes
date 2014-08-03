@@ -8,3 +8,4 @@ GET    /assets/*file                controllers.Assets.at(path="/public", file)
 GET    /                            controllers.ApplicationController.index
 GET    /sentence                    @controllers.SentenceController.getAll(since: String)
 POST   /author/:authorId/sentence   @controllers.SentenceController.create(authorId: String)
+PUT    /sentence/:sentenceId        @controllers.SentenceController.update(sentenceId: String)
