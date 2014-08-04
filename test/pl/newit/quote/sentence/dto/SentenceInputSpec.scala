@@ -7,7 +7,7 @@ import play.api.libs.json.JsSuccess
 class SentenceInputSpec extends Specification {
   "reads" should {
     "read from JSON" in {
-      SentenceInput.reads.reads(SentenceInputExample.EqualityJson) ===
+      SentenceInput.format.reads(SentenceInputExample.EqualityJson) ===
         JsSuccess(SentenceInputExample.Equality)
     }
   }

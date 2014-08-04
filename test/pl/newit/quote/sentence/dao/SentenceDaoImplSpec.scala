@@ -3,6 +3,7 @@ package pl.newit.quote.sentence.dao
 import play.modules.reactivemongo.json.BSONFormats.PartialFormat
 import reactivemongo.api.DB
 import reactivemongo.bson.BSONDocument
+import reactivemongo.core.commands.FindAndModify
 
 import scala.concurrent.Future.successful
 
@@ -103,33 +104,24 @@ class SentenceDaoImplSpec extends Specification with Mockito with BeforeExample 
           .update("foo", SentenceInputExample.Equality)
       } === Some(SentenceExample.Equality)
 
-      there was one(collection).update(
-        selector = Matchers.eq(Json.obj("_id" -> "foo")),
-        update = Matchers.eq(Json.obj("$set"->Json.obj("content" -> "bar"))),
-        writeConcern = any,
-        upsert = any,
-        multi = any)(
-          selectorWriter = any,
-          updateWriter = any, ec = any)
+      //TODO Better check this mock
+      there was one(collection.db).command(any, any)(any)
     }
 
     "update citation if document is not found" in {
-      collection.update(any, any, any, any, any)(any, any, any) returns
-        successful(LastErrorExample.nothingUpdated)
+      collection.db returns mock[DB]
+      val format = implicitly[PartialFormat[BSONDocument]]
+
+      collection.db.command[Option[BSONDocument]](any, any)(any) returns
+        successful(None)
 
       result {
         new SentenceDaoImpl(collection, clock, generator)
           .update("foo", SentenceInputExample.Equality)
       } === None
 
-      there was one(collection).update(
-        selector = Matchers.eq(Json.obj("_id" -> "foo")),
-        update = Matchers.eq(Json.obj("$set"->Json.obj("content" -> "bar"))),
-        writeConcern = any,
-        upsert = any,
-        multi = any)(
-          selectorWriter = any,
-          updateWriter = any, ec = any)
+      //TODO Better check this mock
+      there was one(collection.db).command(any, any)(any)
     }
   }
 }

@@ -6,7 +6,7 @@ import org.specs2.mock.Mockito
 import org.specs2.mutable.Specification
 import org.specs2.specification.BeforeExample
 
-import pl.newit.quote.sentence.dto.SentenceInputExample
+import pl.newit.quote.sentence.dto.{SentenceExample, SentenceInputExample}
 import pl.newit.quote.service.SentenceService
 import pl.newit.quote.service.dto._
 import pl.newit.test.concurrent._
@@ -72,36 +72,36 @@ class SentenceControllerSpec extends Specification with Mockito with BeforeExamp
       )
     }
 
-//    "update existing sentence" in {
-//      service.update(any, any) returns successful(Some(SentenceUpdateExample.CorrectUpdate))
-//
-//      result {
-//        request(body = SentenceUpdateInputExample.CorrectUpdate)
-//      } must beEqualToResult(Ok(Json.toJson(SentenceUpdateExample.CorrectUpdate)))
-//
-//      there was {
-//        one(service).update(SentenceUpdateExample.CorrectUpdate, "sentenceId")
-//        noMoreCallsTo(service)
-//      }
-//    }
-//
-//    "return NotFound if there is no sentence" in {
-//      service.update(any, any) returns successful(None)
-//
-//      result {
-//        request(body = SentenceUpdateInputExample.CorrectUpdate)
-//      } must beEqualToResult(NotFound)
-//
-//      there was {
-//        one(service).update(SentenceUpdateExample.CorrectUpdate, "sentenceId")
-//        noMoreCallsTo(service)
-//      }
-//
-//    }
+    "update existing sentence" in {
+      service.update(any, any) returns successful(Some(SentenceExample.Equality))
+
+      result {
+        request(body = SentenceInputExample.EqualityJson)
+      } must beEqualToResult(Ok(Json.toJson(SentenceExample.EqualityJson)))
+
+      there was {
+        one(service).update(SentenceInputExample.Equality, "sentenceId")
+        noMoreCallsTo(service)
+      }
+    }
+
+    "return NotFound if there is no sentence" in {
+      service.update(any, any) returns successful(None)
+
+      result {
+        request(body = SentenceInputExample.EqualityJson)
+      } must beEqualToResult(NotFound)
+
+      there was {
+        one(service).update(SentenceInputExample.Equality, "sentenceId")
+        noMoreCallsTo(service)
+      }
+
+    }
 
     "return BadRequest for illegal JSON" in {
       result {
-        request(body = SentenceUpdateInputExample.CorrectUpdate - SentenceUpdateInputExample.CorrectUpdate.keys.head)
+        request(body = SentenceInputExample.EqualityJson - SentenceInputExample.EqualityJson.keys.head)
       } must beEqualToResult(BadRequest)
 
     }

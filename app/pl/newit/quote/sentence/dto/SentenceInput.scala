@@ -10,5 +10,5 @@ final case class SentenceInput(
   authorId: String)
 
 object SentenceInput {
-  implicit val reads = Json.reads[SentenceInput]
+  implicit val format = Json.format[SentenceInput]
 }
