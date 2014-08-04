@@ -12,9 +12,8 @@ import pl.newit.common.time.TimeSource
 import pl.newit.quote.author.dao.AuthorDao
 import pl.newit.quote.author.dto.Author
 import pl.newit.quote.sentence.dao.SentenceDao
-import pl.newit.quote.sentence.dto.Sentence
-import pl.newit.quote.sentence.dto.SentenceInput
-import pl.newit.quote.service.dto.{SentenceUpdate, SentenceInfo, SentencePartialInput}
+import pl.newit.quote.sentence.dto.{Sentence, SentenceInput}
+import pl.newit.quote.service.dto.{SentenceUpdate, SentenceInfo}
 import play.api.libs.iteratee.Iteratee
 
 private[service] class SentenceServiceImpl @Inject() (sentences: SentenceDao, authors: AuthorDao, clock: TimeSource)
@@ -26,13 +25,9 @@ private[service] class SentenceServiceImpl @Inject() (sentences: SentenceDao, au
       case None => successful(None)
     }
 
-  override def create(from: SentencePartialInput, authorId: String) =
-    transform(authors.get(authorId))(author =>
-      sentences.create(
-        from = SentenceInput(
-          forDay = from.forDay,
-          content = from.content,
-          authorId = author.id),
+  override def create(from: SentenceInput) =
+    transform(authors.get(from.authorId))(author =>
+      sentences.create(from = from,
         creatorId = "anonymous")
         .map(SentenceInfo.valueOf(_, author)))
 

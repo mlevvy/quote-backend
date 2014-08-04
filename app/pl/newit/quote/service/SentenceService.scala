@@ -3,11 +3,12 @@ import scala.concurrent.Future
 
 import org.joda.time.DateTime
 
-import pl.newit.quote.service.dto.{SentenceUpdate, SentenceInfo, SentencePartialInput}
+import pl.newit.quote.sentence.dto.SentenceInput
+import pl.newit.quote.service.dto.{SentenceUpdate, SentenceInfo}
 
 trait SentenceService {
   /** Creates a new sentence. Returns None if author does not exist. */
-  def create(from: SentencePartialInput, authorId: String): Future[Option[SentenceInfo]]
+  def create(from: SentenceInput): Future[Option[SentenceInfo]]
 
   /** Gets all the sentences from since to now. */
   def getAll(since: DateTime): Future[List[SentenceInfo]]
