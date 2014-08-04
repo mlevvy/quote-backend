@@ -28,7 +28,7 @@ final class SentenceController @Inject() (service: SentenceService) extends Cont
         .map(create)
         .recoverTotal(_ => successful(BadRequest)))
 
-  def update(from: SentenceUpdate, sentenceId: String) =
+  def update(from: SentenceInput, sentenceId: String) =
     service.update(from, sentenceId).map {
       case Some(ok) => Ok(toJson(ok))
       case None => NotFound
@@ -36,7 +36,7 @@ final class SentenceController @Inject() (service: SentenceService) extends Cont
 
   def update(sentenceId: String): Action[JsValue] =
     Action.async(parse.json)(request =>
-      request.body.validate[SentenceUpdate]
+      request.body.validate[SentenceInput]
         .map(update(_, sentenceId))
         .recoverTotal(_ => successful(BadRequest)))
 

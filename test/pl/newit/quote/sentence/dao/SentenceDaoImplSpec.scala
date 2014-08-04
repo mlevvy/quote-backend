@@ -1,6 +1,8 @@
 package pl.newit.quote.sentence.dao
 
-import pl.newit.quote.service.dto.SentenceUpdate
+import play.modules.reactivemongo.json.BSONFormats.PartialFormat
+import reactivemongo.api.DB
+import reactivemongo.bson.BSONDocument
 
 import scala.concurrent.Future.successful
 
@@ -15,10 +17,9 @@ import pl.newit.common.id.UniqueIdGenerator
 import pl.newit.common.mongo.LastErrorExample
 import pl.newit.common.time.TimeSource
 import pl.newit.quote.common.Audit
-import pl.newit.quote.sentence.dto.Sentence
-import pl.newit.quote.sentence.dto.SentenceInput
+import pl.newit.quote.sentence.dto.{SentenceInputExample, SentenceExample, Sentence, SentenceInput}
 import pl.newit.test.concurrent._
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import play.modules.reactivemongo.json.collection.JSONCollection
 
 class SentenceDaoImplSpec extends Specification with Mockito with BeforeExample {
@@ -91,13 +92,16 @@ class SentenceDaoImplSpec extends Specification with Mockito with BeforeExample 
 
   "update" should {
     "update citation if document is found" in {
-      collection.update(any, any, any, any, any)(any, any, any) returns
-        successful(LastErrorExample.oneExistingUpdated)
+      collection.db returns mock[DB]
+      val format = implicitly[PartialFormat[BSONDocument]]
+
+      collection.db.command[Option[BSONDocument]](any, any)(any) returns
+        successful(Some(format.reads(SentenceExample.EqualityJson).get))
 
       result {
         new SentenceDaoImpl(collection, clock, generator)
-          .update("foo", SentenceUpdate("bar"))
-      } === Some(SentenceUpdate("bar"))
+          .update("foo", SentenceInputExample.Equality)
+      } === Some(SentenceExample.Equality)
 
       there was one(collection).update(
         selector = Matchers.eq(Json.obj("_id" -> "foo")),
@@ -115,7 +119,7 @@ class SentenceDaoImplSpec extends Specification with Mockito with BeforeExample 
 
       result {
         new SentenceDaoImpl(collection, clock, generator)
-          .update("foo", SentenceUpdate("bar"))
+          .update("foo", SentenceInputExample.Equality)
       } === None
 
       there was one(collection).update(

@@ -3,6 +3,7 @@ package pl.newit.quote.sentence.dto
 import org.joda.time.DateTime
 
 import pl.newit.quote.common.AuditExample
+import play.api.libs.json.Json
 
 object SentenceExample {
   val Equality = Sentence(
@@ -11,6 +12,18 @@ object SentenceExample {
     content = "Before God we are all equally wise - and equally foolish.",
     authorId = "a1",
     audit = AuditExample.audit)
+
+  val EqualityJson = Json.obj(
+    "_id" -> "s1",
+    "forDay" -> Json.obj("$date" -> 1391212800000L),
+    "content" -> "Before God we are all equally wise - and equally foolish.",
+    "authorId" -> "a1",
+    "audit" -> Json.obj(
+      "creatorId" -> "creator",
+      "updaterId" -> "updater",
+      "create" -> Json.obj("$date" -> 1391212800000L),
+      "update" -> Json.obj("$date" -> 1391212800000L)
+    ))
 
   val Imagination = Sentence(
     id = "s2",

@@ -3,7 +3,7 @@ import scala.concurrent.Future
 
 import org.joda.time.DateTime
 
-import pl.newit.quote.sentence.dto.SentenceInput
+import pl.newit.quote.sentence.dto.{Sentence, SentenceInput}
 import pl.newit.quote.service.dto.{SentenceUpdate, SentenceInfo}
 
 trait SentenceService {
@@ -14,5 +14,5 @@ trait SentenceService {
   def getAll(since: DateTime): Future[List[SentenceInfo]]
 
   /** Updates the sentence content. */
-  def update(sentenceId: SentenceUpdate, contentId: String): Future[Option[SentenceUpdate]]
+  def update(sentenceId: SentenceInput, contentId: String): Future[Option[Sentence]]
 }

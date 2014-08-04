@@ -50,11 +50,15 @@ private[dao] class SentenceDaoImpl @Inject() (@Named("Sentence") collection: JSO
       Json.obj("_id" -> id))
       .map(_.n > 0)
 
-  override def update(id: String, newContent: SentenceUpdate): Future[Option[SentenceUpdate]] = {
-    collection.update(
+  override def update(id: String, newContent: SentenceInput): Future[Option[Sentence]] = {
+    collection.findAndReturnUpdated(
       Json.obj("_id" -> id),
       Json.obj("$set"->Json.obj("content" -> newContent.content))
-    ).map( lastError => if(lastError.n > 0) Some(newContent) else None)
+    ).map(
+        lastError => {
+          None
+        }
+      )
 
   }
 

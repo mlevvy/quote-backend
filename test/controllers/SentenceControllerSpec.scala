@@ -72,32 +72,32 @@ class SentenceControllerSpec extends Specification with Mockito with BeforeExamp
       )
     }
 
-    "update existing sentence" in {
-      service.update(any, any) returns successful(Some(SentenceUpdateExample.CorrectUpdate))
-
-      result {
-        request(body = SentenceUpdateInputExample.CorrectUpdate)
-      } must beEqualToResult(Ok(Json.toJson(SentenceUpdateExample.CorrectUpdate)))
-
-      there was {
-        one(service).update(SentenceUpdateExample.CorrectUpdate, "sentenceId")
-        noMoreCallsTo(service)
-      }
-    }
-
-    "return NotFound if there is no sentence" in {
-      service.update(any, any) returns successful(None)
-
-      result {
-        request(body = SentenceUpdateInputExample.CorrectUpdate)
-      } must beEqualToResult(NotFound)
-
-      there was {
-        one(service).update(SentenceUpdateExample.CorrectUpdate, "sentenceId")
-        noMoreCallsTo(service)
-      }
-
-    }
+//    "update existing sentence" in {
+//      service.update(any, any) returns successful(Some(SentenceUpdateExample.CorrectUpdate))
+//
+//      result {
+//        request(body = SentenceUpdateInputExample.CorrectUpdate)
+//      } must beEqualToResult(Ok(Json.toJson(SentenceUpdateExample.CorrectUpdate)))
+//
+//      there was {
+//        one(service).update(SentenceUpdateExample.CorrectUpdate, "sentenceId")
+//        noMoreCallsTo(service)
+//      }
+//    }
+//
+//    "return NotFound if there is no sentence" in {
+//      service.update(any, any) returns successful(None)
+//
+//      result {
+//        request(body = SentenceUpdateInputExample.CorrectUpdate)
+//      } must beEqualToResult(NotFound)
+//
+//      there was {
+//        one(service).update(SentenceUpdateExample.CorrectUpdate, "sentenceId")
+//        noMoreCallsTo(service)
+//      }
+//
+//    }
 
     "return BadRequest for illegal JSON" in {
       result {
